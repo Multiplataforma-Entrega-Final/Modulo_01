@@ -1,0 +1,91 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  opensearch:
+    image: opensearchproject/opensearch:2.13.0
+    container_name: opensearch
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+      - plugins.security.disabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+  graylog:
+    image: graylog/graylog:6.1
+    container_name: graylog
+    restart: always
+    depends_on:
+      - mongo
+      - opensearch
+    environment:
+      GRAYLOG_ROOT_PASSWORD_SHA2: 05caeb534c7e94eb151951ae73c5e6515cdc6c25aaea26d7e86568ba0a59f6e0   # senha: admin
+      GRAYLOG_HTTP_EXTERNAL_URI: http://localhost:9000/
+    entrypoint: >
+      /usr/bin/tini -- wait-for-it opensearch:9200 -- 
+      /docker-entrypoint.sh
+    ports:
+      - "9000:9000"   # UI do Graylog
+      - "12201:12201/udp"  # GELF UDP para logs
+      - "12201:12201/tcp"  # GELF TCP
+    networks:
+      - backend
+
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot
+    depends_on:
+      - postgres
+      - graylog
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      GRAYLOG_HOST: graylog
+      GRAYLOG_PORT: 12201
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  backend:
+    driver: bridge

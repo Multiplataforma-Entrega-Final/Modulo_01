@@ -1,0 +1,18 @@
+logging:
+  level:
+    root: INFO
+
+  appender:
+    gelf:
+      enabled: true
+      host: ${GRAYLOG_HOST:graylog}
+      port: ${GRAYLOG_PORT:12201}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/appdb
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
