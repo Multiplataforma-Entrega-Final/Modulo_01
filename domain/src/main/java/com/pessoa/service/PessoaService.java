@@ -11,5 +11,6 @@ public interface PessoaService {
     Pessoa pesquisar(Long id);
     Page<Pessoa> listar(Pageable pageable);
     void deletar(Long id);
+    Page<Pessoa> listarTudo(int page);
 }
 

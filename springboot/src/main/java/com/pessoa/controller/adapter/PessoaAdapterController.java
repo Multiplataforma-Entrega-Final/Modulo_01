@@ -3,8 +3,12 @@ package com.pessoa.controller.adapter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.pessoa.controller.dto.request.PessoaRequest;
+import com.pessoa.controller.dto.response.PessoaResponse;
 import com.pessoa.entity.Pessoa;
 import com.pessoa.repository.PessoaRepository;
+
+import jakarta.validation.Valid;
 
 public class PessoaAdapterController {
         private final PessoaRepository repository;
@@ -42,5 +46,22 @@ public class PessoaAdapterController {
     public void delete(String id){
         Long right_id = Long.valueOf(id);
         repository.deleteById(right_id);
+    }
+
+    public static Pessoa toEntity(PessoaRequest request) {
+        return new Pessoa(
+            request.nome(),
+            request.dtNascimento(),
+            request.ativo()
+        );
+    }
+
+    public static PessoaResponse toResponse(Pessoa pessoa) {
+        return new PessoaResponse(
+            pessoa.getId(),
+            pessoa.getNome(),
+            pessoa.getDtNascimento(),
+            pessoa.isAtivo()
+        );
     }
 }

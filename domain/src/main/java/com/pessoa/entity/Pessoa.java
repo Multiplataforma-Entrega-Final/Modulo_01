@@ -24,7 +24,14 @@ public class Pessoa {
 
     public Pessoa() {}
 
-    public Pessoa(String nome, LocalDate dtNascimento, boolean ativo) {
+    public Pessoa(String nome, LocalDate dtNascimento, boolean ativo) {;
+        this.nome = nome;
+        this.dtNascimento = dtNascimento;
+        this.ativo = ativo;
+    }
+
+    public Pessoa(Long id, String nome, LocalDate dtNascimento, boolean ativo) {
+        this.id = id;
         this.nome = nome;
         this.dtNascimento = dtNascimento;
         this.ativo = ativo;
