@@ -7,7 +7,6 @@ import com.pessoa.controller.adapter.PessoaAdapterController;
 import com.pessoa.controller.dto.request.PessoaRequest;
 import com.pessoa.controller.dto.response.PessoaResponse;
 import com.pessoa.entity.Pessoa;
-import com.pessoa.repository.PessoaRepository;
 import com.pessoa.service.PessoaService;
 
 import jakarta.validation.Valid;
@@ -30,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PessoaController {
     private PessoaService service;
 
-    public PessoaController(PessoaService service, PessoaRepository repository) {
+    public PessoaController(PessoaService service) {
         this.service = service;
     }
 

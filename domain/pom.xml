@@ -55,4 +55,8 @@
     </plugins>
     </build>
 
+    <properties>
+        <sonar.projectKey>api-pessoas-domain</sonar.projectKey>
+    </properties>
+
 </project>

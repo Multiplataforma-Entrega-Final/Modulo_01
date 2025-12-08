@@ -24,9 +24,9 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public Pessoa criar(Pessoa pessoa) {
-        Pessoa pessoa_criada = repo.save(pessoa);
-        log.info("Pessoa criada com sucesso! ID: {}", pessoa_criada.getId());
-        return pessoa_criada;
+        Pessoa pessoaCriada = repo.save(pessoa);
+        log.info("Pessoa criada com sucesso! ID: {}", pessoaCriada.getId());
+        return pessoaCriada;
     }
 
     @Override
@@ -52,9 +52,9 @@ public class PessoaServiceImpl implements PessoaService {
         existente.setDtNascimento(novaPessoa.getDtNascimento());
         existente.setAtivo(novaPessoa.isAtivo());
     
-        Pessoa pessoa_atualizada = repo.save(existente);
-        log.info("Pessoa atualizada com sucesso, ID {}", pessoa_atualizada.getId());
-        return pessoa_atualizada;
+        Pessoa pessoaAtualizada = repo.save(existente);
+        log.info("Pessoa atualizada com sucesso, ID {}", pessoaAtualizada.getId());
+        return pessoaAtualizada;
     }
 
     @Override

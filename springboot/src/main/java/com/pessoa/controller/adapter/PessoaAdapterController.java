@@ -8,8 +8,6 @@ import com.pessoa.controller.dto.response.PessoaResponse;
 import com.pessoa.entity.Pessoa;
 import com.pessoa.repository.PessoaRepository;
 
-import jakarta.validation.Valid;
-
 public class PessoaAdapterController {
         private final PessoaRepository repository;
 
@@ -31,9 +29,9 @@ public class PessoaAdapterController {
     }
 
     public Pessoa update(String id, Pessoa pessoa){
-        Long right_id = Long.valueOf(id);
+        Long rightID = Long.valueOf(id);
 
-        Pessoa existente = repository.findById(right_id).orElse(null);
+        Pessoa existente = repository.findById(rightID).orElse(null);
         if (existente == null) return null;
 
         existente.setNome(pessoa.getNome());
@@ -44,8 +42,8 @@ public class PessoaAdapterController {
     }
 
     public void delete(String id){
-        Long right_id = Long.valueOf(id);
-        repository.deleteById(right_id);
+        Long rightID = Long.valueOf(id);
+        repository.deleteById(rightID);
     }
 
     public static Pessoa toEntity(PessoaRequest request) {
