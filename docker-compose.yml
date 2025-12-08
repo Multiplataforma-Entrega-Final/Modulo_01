@@ -25,6 +25,8 @@ services:
       - bootstrap.memory_lock=true
       - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
       - plugins.security.disabled=true
+      - plugins.security.ssl.http.enabled=false
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=s]N1#g695!|e
     ulimits:
       memlock:
         soft: -1
@@ -51,11 +53,13 @@ services:
       - mongo
       - opensearch
     environment:
-      GRAYLOG_ROOT_PASSWORD_SHA2: 05caeb534c7e94eb151951ae73c5e6515cdc6c25aaea26d7e86568ba0a59f6e0   # senha: admin
-      GRAYLOG_HTTP_EXTERNAL_URI: http://localhost:9000/
-    entrypoint: >
-      /usr/bin/tini -- wait-for-it opensearch:9200 -- 
-      /docker-entrypoint.sh
+      GRAYLOG_ROOT_USERNAME: admin
+      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918   # senha: admin
+      GRAYLOG_HTTP_EXTERNAL_URI: http://graylog:9000/
+      GRAYLOG_PASSWORD_SECRET: minha_senha_secreta_com_mais_de_16
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: admin12
+      GRAYLOG_OPENSEARCH_HOSTS: http://opensearch:9200
+      GRAYLOG_ELASTICSEARCH_HOSTS: http://opensearch:9200
     ports:
       - "9000:9000"   # UI do Graylog
       - "12201:12201/udp"  # GELF UDP para logs
